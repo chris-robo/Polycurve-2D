@@ -47,13 +47,35 @@ def draw_line_sdf(image,x0,y0,x1,y1,thickness,color):
     ymax = max(y0,y1)
     for y in range(int(ymin)-10,int(ymax)+10):
         for x in range(int(xmin)-10,int(xmax)+10):
-            bgcol = image[y][x]
             dist,t = point_line_dist(x,y,x0,y0,x1,y1)
             if not 0.0 <= t/math.hypot(x1-x0,y1-y0) <= 1.0:
                 continue
             d = abs(dist)-(thickness-1.)/2.
             d = max(d,0.)
             d = min(d,1.)
+            bgcol = image[y][x]
             image[y][x] = color_lerp(d,color,bgcol)
 
+def point_circle_dist(p,q,cx,cy,r):
+    return math.hypot(p-cx,q-cy)-r
 
+def circle_draw_sdf(image,cx,cy,r,thickness,color):
+    x0 = cx-r
+    x1 = cx+r
+    y0 = cy-r
+    y1 = cy+r
+    xmin = min(x0,x1)
+    xmax = max(x0,x1)
+    ymin = min(y0,y1)
+    ymax = max(y0,y1)
+    for y in range(int(ymin)-10,int(ymax)+10):
+        for x in range(int(xmin)-10,int(xmax)+10):
+            dist = point_circle_dist(x,y,cx,cy,r)
+            # if not 0.0 <= t/math.hypot(x1-x0,y1-y0) <= 1.0:
+            #     continue
+            d = abs(dist)-(thickness-1.)/2.
+            d = max(d,0.)
+            d = min(d,1.)
+            bgcol = image[y][x]
+            image[y][x] = color_lerp(d,color,bgcol)
+            
