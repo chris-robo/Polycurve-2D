@@ -32,6 +32,7 @@ def color_lerp(t,c0,c1):
     return c
 
 def point_line_dist(p,q,x0,y0,x1,y1):
+    # TODO: optimize this
     unit_right_x, unit_right_y = vec2_unit(y1-y0,x0-x1)
     line_unit_x , line_unit_y  = vec2_unit(x1-x0,y1-y0)
     t = (p-x0)*line_unit_x + (q-y0)*line_unit_y
