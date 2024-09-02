@@ -80,3 +80,28 @@ def circle_draw_sdf(image,cx,cy,r,thickness,color):
             bgcol = image[y][x]
             image[y][x] = color_lerp(d,color,bgcol)
             
+def arc_draw_sdf(image,cx,cy,r,x0,y0,x1,y1,thickness,color):
+    x0b = cx-r
+    x1b = cx+r
+    y0b = cy-r
+    y1b = cy+r
+    xmin = min(x0b,x1b)
+    xmax = max(x0b,x1b)
+    ymin = min(y0b,y1b)
+    ymax = max(y0b,y1b)
+    for y in range(int(ymin)-10,int(ymax)+10):
+        for x in range(int(xmin)-10,int(xmax)+10):
+            dist = point_circle_dist(x,y,cx,cy,r)
+            # if not 0.0 <= t/math.hypot(x1-x0,y1-y0) <= 1.0:
+            #     continue
+            dot0 = (cy-y0)*(x-cx)+(x0-cx)*(y-cy)
+            dot1 = (y1-cy)*(x-cx)+(cx-x1)*(y-cy)
+            chirality = (x0-cx)*(y1-cy)-(y0-cy)*(x1-cx)
+            if chirality*dot0 < 0 or chirality*dot1 < 0:
+                continue
+            d = abs(dist)-(thickness-1.)/2.
+            d = max(d,0.)
+            d = min(d,1.)
+            bgcol = image[y][x]
+            image[y][x] = color_lerp(d,color,bgcol)
+            
