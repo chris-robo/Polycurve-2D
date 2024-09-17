@@ -10,6 +10,8 @@ def lerp(x0,y0,x1,y1,x):
 
 def vec2_unit(x,y):
     d = math.hypot(x,y)
+    if d == 0.0:
+        return 0.0,0.0
     return x/d,y/d
 
 def color_lerp(t,c0,c1):
@@ -49,7 +51,7 @@ def draw_line_sdf(image,x0,y0,x1,y1,thickness,color):
     for y in range(int(ymin)-10,int(ymax)+10):
         for x in range(int(xmin)-10,int(xmax)+10):
             dist,t = point_line_dist(x,y,x0,y0,x1,y1)
-            if not 0.0 <= t/math.hypot(x1-x0,y1-y0) <= 1.0:
+            if not math.hypot(x1-x0,y1-y0) or not 0.0 <= t/math.hypot(x1-x0,y1-y0) <= 1.0:
                 continue
             d = abs(dist)-(thickness-1.)/2.
             d = max(d,0.)
