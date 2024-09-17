@@ -225,14 +225,16 @@ def curve_centroid_y(curve):
     return centroid_x,centroid_y
 # render.line_draw(image,100,100,200,200,WHITE)
 
-points = parse_curve("asym.txt")
+# points = parse_curve("asym.txt")
 # points = parse_curve("poly.curve")
-# points = parse_curve("circle.txt")
+points = parse_curve("circle.txt")
 draw_curves(points)
 if curve_is_closed(points):
     print("Curve is closed!")
-    curve_area(points)
-    curve_centroid_y(points)
+    area = curve_area(points)
+    x_height,y_height = curve_centroid_y(points)
+    volume = area*y_height*2*math.pi
+    print(f"{volume=}")
 else:
     print("Curve is not closed.")
 
